@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blue Bloom - Une initiative pour apporter de l'eau potable dans les zones rurales du Maroc.">
+    <meta name="keywords" content="Blue Bloom, eau potable, projets humanitaires, Maroc">
+    <meta name="author" content="Blue Bloom">
+    <title>Blue Bloom</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+            color: black;
+        }
+
+
+        /* Vidéo de fond */
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            text-align: center;
+        }
+
+
+        .video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            object-fit: cover;
+        }
+
+
+        .donate-btn {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 15px 40px;
+            font-size: 1.5em;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            backdrop-filter: blur(5px);
+            position: relative;
+            top: -120px;
+        }
+
+
+        .donate-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+
+        /* Petit bouton sticky après défilement */
+        .donate-small {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: #FF0000;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+
+        .donate-small.show {
+            display: block;
+        }
+
+
+        /* Section Notre Mission */
+        .mission-section {
+            position: relative;
+            background: linear-gradient(to bottom right, #5caedc, #d6eef8);
+            color: black;
+            padding: 100px 20px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+
+        .mission-section h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+
+        .mission-section p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+
+        /* Formes décoratives */
+        .decorative-shape {
+            position: absolute;
+            opacity: 0;
+            transform: translateY(100px) scale(0.5);
+            transition: all 1s ease;
+        }
+
+
+        .visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+
+        .decorative-shape1 {
+            width: 350px;
+            height: 350px;
+            background: rgba(255, 255, 255, 0.6);
+            top: -80px;
+            left: -100px;
+            clip-path: circle(50% at 50% 50%);
+        }
+
+
+        .decorative-shape2 {
+            width: 400px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.4);
+            top: 50%;
+            left: -150px;
+            transform: translateY(-50%);
+            clip-path: polygon(50% 0%, 100% 30%, 80% 100%, 20% 100%, 0% 30%);
+        }
+
+
+        .decorative-shape3 {
+            width: 250px;
+            height: 200px;
+            background: rgba(0, 123, 255, 0.6);
+            bottom: -50px;
+            right: -120px;
+            clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+        }
+
+
+        /* Section Notre Histoire */
+        .history-section {
+            position: relative;
+            background: linear-gradient(to bottom, #ffffff, #fbe4d1);
+            color: black;
+            padding: 100px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 50px;
+            overflow: hidden;
+        }
+
+
+        .history-section h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #FF0000;
+        }
+
+
+        .history-section p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            max-width: 600px;
+        }
+
+
+        .history-section img {
+            max-width: 400px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+
+        /* Forme décorative subtile */
+        .decorative-subtle {
+            position: absolute;
+            width: 400px;
+            height: 200px;
+            background: rgba(255, 182, 193, 0.3);
+            top: 50px;
+            left: 0;
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 1s ease;
+        }
+
+
+        .decorative-subtle.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Vidéo avec bouton -->
+    <div class="video-container">
+        <video autoplay loop muted playsinline class="video-bg">
+            <source src="bb.mp4" type="video/mp4">
+            Votre navigateur ne prend pas en charge la balise vidéo.
+        </video>
+        <button class="donate-btn" onclick="window.open('https://www.leetchi.com/fr/c/blue-bloom-1425315?utm_source=copylink&utm_medium=social_sharing', '_blank')">
+            Faire un don
+        </button>
+    </div>
+
+
+    <!-- Bouton sticky pour le don -->
+    <button class="donate-small" onclick="window.open('https://www.leetchi.com/fr/c/blue-bloom-1425315?utm_source=copylink&utm_medium=social_sharing', '_blank')">
+        Faire un don
+    </button>
+
+
+    <!-- Section Notre Mission -->
+    <div class="mission-section">
+        <div class="decorative-shape decorative-shape1"></div>
+        <div class="decorative-shape decorative-shape2"></div>
+        <div class="decorative-shape decorative-shape3"></div>
+        <h1>Notre Mission</h1>
+        <p>
+            L’association <strong>Blue Bloom</strong> a pour mission de garantir un accès durable à l’eau potable pour les communautés vulnérables. 
+            Notre engagement est ancré dans la conviction que chaque goutte d’eau peut transformer une vie. 
+            À travers des projets d’infrastructures, de sensibilisation et de partenariats, nous bâtissons un avenir où l’eau est accessible à tous.
+        </p>
+    </div>
+
+
+    <!-- Section Notre Histoire -->
+    <div class="history-section">
+        <div class="decorative-subtle"></div>
+        <div>
+            <h1>Notre Histoire</h1>
+            <p>
+                Le <strong>8 septembre 2023</strong>, un tremblement de terre a frappé la région de Marrakech-Safi, causant des dégâts importants et impactant des milliers de vies. 
+                Alors que les fondateurs, Ali et Sami, vivaient à Rabat, loin de l'épicentre, ils ont rapidement été informés de la situation grâce aux réseaux sociaux. 
+                Ému par les dégâts causés, ils se sont rendus sur place pour aider. 
+                Sur le terrain, ils ont découvert une vérité choquante : des milliers de personnes dans les zones rurales n'ont pas accès à <strong>l'eau potable</strong>. 
+                Cet événement a inspiré la création de <strong>Blue Bloom</strong>, une organisation dédiée à apporter des solutions durables à cette crise.
+            </p>
+        </div>
+        <img src="image.png" alt="Image Notre Histoire">
+    </div>
+
+
+    <script>
+        // Apparition du petit bouton sticky après défilement
+        const donateSmallBtn = document.querySelector('.donate-small');
+        const missionSection = document.querySelector('.mission-section');
+        const shapes = document.querySelectorAll('.decorative-shape');
+        const subtleShape = document.querySelector('.decorative-subtle');
+
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    shapes.forEach(shape => shape.classList.add('visible'));
+                }
+                if (entry.target === subtleShape && entry.isIntersecting) {
+                    subtleShape.classList.add('visible');
+                }
+            });
+        });
+
+
+        shapes.forEach(shape => observer.observe(shape));
+        observer.observe(subtleShape);
+
+
+        window.addEventListener('scroll', () => {
+            const missionTop = missionSection.offsetTop;
+            if (window.scrollY >= missionTop) {
+                donateSmallBtn.classList.add('show');
+            } else {
+                donateSmallBtn.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blue Bloom - Une initiative pour apporter de l'eau potable dans les zones rurales du Maroc.">
+    <meta name="keywords" content="Blue Bloom, eau potable, projets humanitaires, Maroc">
+    <meta name="author" content="Blue Bloom">
+    <title>Blue Bloom - Mot des Fondateurs</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+            color: black;
+            line-height: 1.6;
+        }
+
+
+        /* Section Mot des Fondateurs */
+        .founders-section {
+            background: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+
+        .founders-section h1 {
+            font-size: 2.5em;
+            color: #007BFF;
+            margin-bottom: 30px;
+        }
+
+
+        .founders-section p {
+            font-size: 1.2em;
+            max-width: 800px;
+            margin: 0 auto 20px auto;
+            color: #333;
+        }
+
+
+        /* Signature animation */
+        .signature-container {
+            margin-top: 50px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2em;
+            color: #333;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        .signature {
+            border-right: 2px solid #007BFF;
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+            animation: typing 4s steps(30, end), blink-caret 0.7s step-end infinite;
+        }
+
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+
+
+        @keyframes blink-caret {
+            from, to {
+                border-color: transparent;
+            }
+            50% {
+                border-color: #007BFF;
+            }
+        }
+    </style>
+    <!-- Import de Google Fonts pour Dancing Script -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Section Mot des Fondateurs -->
+    <div class="founders-section">
+        <h1>Mot des Fondateurs</h1>
+        <p>
+            Lorsque nous avons créé <strong>Blue Bloom</strong>, notre vision était de répondre à un besoin vital : offrir un accès durable à l'eau potable pour des milliers de communautés vulnérables. 
+            Ce projet est né d'une profonde prise de conscience : pour beaucoup, l'accès à l'eau est un combat quotidien, une réalité difficile que nous ne pouvions ignorer. 
+            Nous avons choisi d'agir, convaincus qu'une action collective pouvait changer des vies et offrir un avenir meilleur.
+        </p>
+        <p>
+            Aujourd'hui, grâce à votre soutien, nous avons déjà pu transformer des vies et apporter des solutions concrètes là où elles étaient le plus nécessaires. 
+            Votre générosité nous encourage à poursuivre cette mission et à aller toujours plus loin. Ensemble, nous construisons un monde où chaque goutte d'eau devient une promesse de vie.
+        </p>
+        <p>
+            De la part de toute l'équipe, nous vous remercions sincèrement pour votre confiance, votre engagement et votre croyance en ce projet. 
+            Ce chemin que nous parcourons ensemble est une aventure humaine extraordinaire, portée par des valeurs de solidarité, de respect et d'espoir.
+        </p>
+        <div class="signature-container">
+            <span class="signature">Ali et Sami</span>
+        </div>
+    </div>
+</body>
+</html><!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pourquoi faire un don ?</title>
+    <style>
+        /* Style global */
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            color: black;
+            line-height: 1.8;
+            background-color: #f4f4f4; /* Fond clair et neutre */
+        }
+
+
+        /* Section Pourquoi faire un don */
+        .donation-section {
+            background: #f6f1eb; /* Beige clair */
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+
+        .donation-section h1 {
+            font-size: 2.8em;
+            color: #a93226; /* Rouge bordeaux */
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+
+        .donation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+
+        .donation-card {
+            background: #ffffff; /* Fond blanc */
+            color: #333333; /* Gris foncé */
+            padding: 30px;
+            text-align: left;
+            border: 4px solid transparent; /* Initial transparent border */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+
+        .donation-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-color: #a93226; /* Accentuer la bordure au survol */
+        }
+
+
+        .donation-card h2 {
+            font-size: 1.8em;
+            color: #34495e; /* Bleu-gris foncé */
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+
+        .donation-card p {
+            font-size: 1.1em;
+        }
+
+
+        /* Couleurs alternées pour les cartes */
+        .donation-card:nth-child(odd) {
+            background: #d5d8dc; /* Gris clair */
+        }
+
+
+        .donation-card:nth-child(even) {
+            background: #f7dc6f; /* Jaune doux */
+        }
+    </style>
+</head>
+<body>
+    <!-- Section Pourquoi faire un don -->
+    <div class="donation-section">
+        <h1>Pourquoi faire un don ?</h1>
+        <div class="donation-grid">
+            <div class="donation-card">
+                <h2>Préserver les racines</h2>
+                <p>
+                    Choisir de faire un don, c’est d’abord faire preuve de bienveillance et d’ouverture d’esprit,
+                    tout en permettant aux enfants de préserver leurs traditions et racines culturelles, pour un avenir respectueux de leur histoire.
+                </p>
+            </div>
+            <div class="donation-card">
+                <h2>Garantir l'avenir</h2>
+                <p>
+                    Chaque don ouvre une porte vers un futur meilleur pour les enfants : un accès à une éducation stable,
+                    une santé améliorée et des opportunités économiques grâce à l'eau potable et des conditions de vie décentes.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html><!-- Section Blue Bloom en chiffres -->
+<div class="stats-section" style="background: linear-gradient(to bottom, #eaf4fa, #d8eaf6); padding: 100px 20px; text-align: center; position: relative;">
+    <h1 style="font-size: 2.8em; color: #005680; font-weight: bold; margin-bottom: 50px; text-transform: uppercase; letter-spacing: 2px;">Blue Bloom en chiffres</h1>
+    <p style="font-size: 1.2em; color: #555; max-width: 800px; margin: 0 auto 60px;">
+        Derrière chaque chiffre se cache une histoire, un espoir et une volonté de changer des vies. Ces réalisations illustrent notre engagement et l'impact de votre soutien pour un avenir où chaque goutte d'eau compte.
+    </p>
+    <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 200px; max-width: 300px; text-align: center; position: relative;">
+            <div class="stat-box" style="border: none; border-radius: 15px; padding: 40px; background: rgba(0, 86, 128, 0.1); box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);">
+                <h2 class="stat-number" data-target="10" style="font-size: 3.5em; color: #005680; margin-bottom: 15px; font-weight: bold;">0</h2>
+                <p style="font-size: 1.2em; color: #333; margin: 0;">Puits construits</p>
+            </div>
+        </div>
+        <div style="flex: 1; min-width: 200px; max-width: 300px; text-align: center; position: relative;">
+            <div class="stat-box" style="border: none; border-radius: 15px; padding: 40px; background: rgba(0, 86, 128, 0.15); box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);">
+                <h2 class="stat-number" data-target="5" style="font-size: 3.5em; color: #005680; margin-bottom: 15px; font-weight: bold;">0</h2>
+                <p style="font-size: 1.2em; color: #333; margin: 0;">Pays aidés</p>
+            </div>
+        </div>
+        <div style="flex: 1; min-width: 200px; max-width: 300px; text-align: center; position: relative;">
+            <div class="stat-box" style="border: none; border-radius: 15px; padding: 40px; background: rgba(0, 86, 128, 0.2); box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);">
+                <h2 class="stat-number" data-target="12" style="font-size: 3.5em; color: #005680; margin-bottom: 15px; font-weight: bold;">0</h2>
+                <p style="font-size: 1.2em; color: #333; margin: 0;">k $ récoltés</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // Animation des chiffres synchronisée et légèrement accélérée
+    const stats = document.querySelectorAll('.stat-number');
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const duration = 2000; // Durée totale de l'animation (en ms)
+                const startTime = performance.now(); // Temps de départ
+
+
+                const animateStats = (currentTime) => {
+                    const elapsedTime = currentTime - startTime;
+                    const progress = Math.min(elapsedTime / duration, 1); // Progression entre 0 et 1
+
+
+                    stats.forEach(stat => {
+                        const target = +stat.getAttribute('data-target');
+                        const currentValue = Math.floor(progress * target);
+                        let suffix = "";
+                        if (stat.dataset.target === "12") suffix = "k"; // Suffixe pour $ récoltés
+                        else suffix = "+";
+                        stat.textContent = currentValue + suffix;
+                    });
+
+
+                    if (progress < 1) {
+                        requestAnimationFrame(animateStats);
+                    }
+                };
+
+
+                requestAnimationFrame(animateStats);
+                observer.disconnect(); // Déconnecter après l'animation
+            }
+        });
+    }, { threshold: 0.5 }); // Déclencher à 50% de visibilité
+
+
+    observer.observe(document.querySelector('.stats-section'));
+</script>
